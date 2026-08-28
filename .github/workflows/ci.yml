@@ -29,6 +29,7 @@ jobs:
         with:
           package-name: demo_pkg
           target-ros2-distro: ${{ matrix.ros_distro }}
+          import-token: ${{ secrets.IMPORT_TOKEN }}
 
       - name: Upload colcon logs
         uses: actions/upload-artifact@v4
