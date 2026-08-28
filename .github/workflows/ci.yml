@@ -8,6 +8,8 @@ on:
 
 jobs:
   build-and-test:
+    permissions:
+      contents: read
     name: build-and-test (${{ matrix.ros_distro }})
     runs-on: ubuntu-22.04
     strategy:
