@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: build-and-test (${{ matrix.ros_distro }})
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # Add "jazzy" or "kilted" here to test against more distros,
+        # the same way real projects support multiple ROS/Ubuntu versions.
+        ros_distro: [humble]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup ROS 2 ${{ matrix.ros_distro }}
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: ${{ matrix.ros_distro }}
+
+      - name: Build and test
+        uses: ros-tooling/action-ros-ci@v0.4
+        with:
+          package-name: demo_pkg
+          target-ros2-distro: ${{ matrix.ros_distro }}
+
+      - name: Upload colcon logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: colcon-logs-${{ matrix.ros_distro }}
+          path: ros_ws/log
