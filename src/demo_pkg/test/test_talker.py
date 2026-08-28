@@ -28,3 +28,6 @@ def test_publishes_incrementing_counter():
     finally:
         node.destroy_node()
         rclpy.shutdown()
+
+if __name__ == "__main__":
+    test_publishes_incrementing_counter()
